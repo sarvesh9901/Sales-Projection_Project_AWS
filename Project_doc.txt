@@ -1,0 +1,12 @@
+## Sales Projection Project AWS
+In DynamoDB sales related data in continewously getting published our task is to transform it and save it into s3 bucket.
+
+1. Created DynamoDB table with name gadgetOrders and enabled CDC related settings. On other hand we set up kinesis stream and setup eventBridge pipe
+2. In eventBridge pipe we setup source as a DynamoDB table and destination as kinesis stream with partiotin key as eventID.
+3. whereas in kinesis stream we setup source as a eventBridge.
+4. After that we setup a firehose which takes data from kinesis stream and setup destination as s3 bucket.
+In firehose we enabled transform source as lambda and add our lambda function related all details to it. 
+Basically when firehose start gettting data our lambda function get triggered and perforem some data validation and transformation on it 
+this transformation happens for record by record and at the end data is stored in s3 bucket.
+5. we create glue crawler which crawl target s3 bucket and created glue database in glue catalog for registering table.
+6. At the end it we Run Athena query on top of it and check the results.
